@@ -1,5 +1,5 @@
 # api-key-misconfig-scanner
-Slayer GAPIs Scanner is a focused security assessment tool designed to detect misconfigured, overly permissive, or abusable Google API keys by validating real-world access across multiple Google services.
+Slayer APIs Scanner is a focused security assessment tool designed to detect misconfigured, overly permissive, or abusable Google API keys by validating real-world access across multiple Google services.
 
 Unlike simple key validators, this tool classifies API key behavior to distinguish between:
 invalid or revoked keys
