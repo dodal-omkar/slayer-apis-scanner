@@ -65,17 +65,17 @@ optional arguments:
 
 **Common Options**
 
-# Verbose mode (print requests & responses)
+Verbose mode (print requests & responses)
 python3 slayer_apis_scanner_v3.1.py -a KEY -v
 
-# Skip AI-related APIs (Vision / TTS)
+Skip AI-related APIs (Vision / TTS)
 python3 slayer_apis_scanner_v3.1.py -a KEY --no-ai
 
-# Skip Firebase Cloud Messaging checks
+Skip Firebase Cloud Messaging checks
 python3 slayer_apis_scanner_v3.1.py -a KEY --no-fcm
 
-# Include Cloud Storage checks (requires project ID)
+Include Cloud Storage checks (requires project ID)
 python3 slayer_apis_scanner_v3.1.py -a KEY --project-id my-gcp-project
 
-# Control concurrency
+Control concurrency
 python3 slayer_apis_scanner_v3.1.py -a KEY -t 4
