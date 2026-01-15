@@ -62,6 +62,9 @@ optional arguments:
   -t THREADS, --threads THREADS
                         Number of concurrent threads (default: 8)
 
+<img width="1555" height="376" alt="2026-01-13 21_28_37-Scripts - File Explorer" src="https://github.com/user-attachments/assets/afddd985-f313-44de-8448-6da323b87674" />
+
+
 
 **Common Options**
 
