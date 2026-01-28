@@ -82,3 +82,8 @@ python3 slayer_apis_scanner_v3.1.py -a KEY --project-id my-gcp-project
 
 Control concurrency
 python3 slayer_apis_scanner_v3.1.py -a KEY -t 4
+
+
+## In Action
+<img width="1906" height="801" alt="image" src="https://github.com/user-attachments/assets/a3103a04-f594-48e6-a469-f22f3107e465" />
+
