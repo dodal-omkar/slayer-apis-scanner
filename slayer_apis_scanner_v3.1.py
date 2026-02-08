@@ -473,6 +473,7 @@ def scan_key(apikey, run_ai=True, run_fcm=True, project_id=None, threads=MAX_WOR
         print("-------------------------------------------------------------")
         # Signed footer for attribution in logs/reports
         print("\033[1;30mScanner executed, Thanks for using from Slayer | slayer_apis_scanner\033[0m")
+        print("\033[1;30mhttps://github.com/dodal-omkar/slayer-apis-scanner\033[0m")
         print("-------------------------------------------------------------")
 
 def main():
