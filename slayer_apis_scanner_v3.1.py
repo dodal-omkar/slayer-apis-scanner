@@ -55,6 +55,8 @@ def banner(masked_key=None, threads=None):
     with PRINT_LOCK:
         print(f"\n\033[1;35m[{TOOL_NAME} {TOOL_VERSION}]\033[0m Google API key scanner")
         print("-------------------------------------------------------------")
+        print("\033[1;36mAuthor    : Slayer\033[0m")
+        print("-------------------------------------------------------------")
         if masked_key is not None:
             print(f"Key: \033[36m{masked_key}\033[0m")
         if threads is not None:
@@ -413,7 +415,7 @@ def scan_key(apikey, run_ai=True, run_fcm=True, project_id=None, threads=MAX_WOR
 
     # 11. Translate-PA
     tp_url = "https://translate-pa.googleapis.com/v1/translateHtml"
-    tp_data = '[[["Hello, from slayer !!!"],"en","hi"],"en"]'
+    tp_data = '[[["Hello, from slayer_apis_scanner !!!"],"en","hi"],"en"]'
     tasks.append((
         "Translate-PA (Internal)", "POST",
         tp_url,
@@ -469,6 +471,9 @@ def scan_key(apikey, run_ai=True, run_fcm=True, project_id=None, threads=MAX_WOR
         else:
             print("No vulnerabilities found.")
         print("-------------------------------------------------------------")
+        # Signed footer for attribution in logs/reports
+        print("\033[1;30mScanner executed, Thanks for using from Slayer | slayer_apis_scanner\033[0m")
+        print("-------------------------------------------------------------")
 
 def main():
     global VERBOSE_MODE, MAX_WORKERS
@@ -490,4 +495,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
