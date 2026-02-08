@@ -1,8 +1,15 @@
 #!/usr/bin/env python3
 """
-slayer_apis_scanner - Google API Key Misconfiguration Scanner (v3.1)
+═══════════════════════════════════════════════════════════════
+  slayer_apis_scanner — Google API Key Misconfiguration Scanner
+  Version : v3.1
 
-Version: v3.1
+  Author  : Slayer
+  Role    : Security Research / Offensive Testing
+  Scope   : Google API key exposure & misconfiguration detection
+
+═══════════════════════════════════════════════════════════════
+
 Changelog since v3.01: 
  - Show PoC URL in vulnerability output and summary
  - Restore more detailed error-token parsing (parity with v2.x)
@@ -483,3 +490,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
