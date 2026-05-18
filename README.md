@@ -86,5 +86,7 @@ Control concurrency
 
 
 ## In Action
-<img width="1906" height="801" alt="image" src="https://github.com/user-attachments/assets/a3103a04-f594-48e6-a469-f22f3107e465" />
+
+<img width="1904" height="913" alt="image" src="https://github.com/user-attachments/assets/730571b8-4108-4bb4-aa73-3239938cf0e2" />
+
 
