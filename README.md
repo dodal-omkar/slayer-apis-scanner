@@ -28,28 +28,34 @@ API key leakage validation
 Defensive testing of API key restrictions
 Internal security tooling & automation
 
-⚠️ Responsible Use
+## Features
+- Firebase API testing
+- Google Maps API checks
+- Generative AI endpoint checks
+- translate-pa detection
+- Header fallback logic
+- Multi-threaded scanning
 
-This tool sends real requests to Google APIs and may incur quota usage or billing depending on the key configuration.
-Use only:
-on keys you own
-with explicit authorization
-in controlled testing environments
+
+## Disclaimer
+Authorized security testing only.
 
 The author assumes no responsibility for misuse.
 
-**Basic Usage**
+## Usage
+python slayer_apis_scanner_v4.py -a API_KEY
 
-python3 slayer_apis_scanner_v3.1.py -a YOUR_GOOGLE_API_KEY
+## PoC Mode
+python slayer_apis_scanner_v4.py -a API_KEY --poc
 
 **Help Menu**
 
-$ python3 slayer_apis_scanner_v3.1.py -h
+$ python3 slayer_apis_scanner_v4.0.py -h
 
 usage: slayer_apis_scanner [-h] [-a API_KEY] [-v] [--no-ai] [--no-fcm]
                            [--project-id PROJECT_ID] [-t THREADS]
 
-Slayer APIs Scanner v3.1
+Slayer APIs Scanner v4.0
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -62,26 +68,23 @@ optional arguments:
   -t THREADS, --threads THREADS
                         Number of concurrent threads (default: 8)
 
+  **Common Options**
+
+Verbose mode (print requests & responses)
+
+Skip AI-related APIs (Vision / TTS)
+
+Skip Firebase Cloud Messaging checks
+
+Include Cloud Storage checks (requires project ID)
+
+Control concurrency
+
 <img width="1555" height="376" alt="2026-01-13 21_28_37-Scripts - File Explorer" src="https://github.com/user-attachments/assets/afddd985-f313-44de-8448-6da323b87674" />
 
 
 
-**Common Options**
 
-Verbose mode (print requests & responses)
-python3 slayer_apis_scanner_v3.1.py -a KEY -v
-
-Skip AI-related APIs (Vision / TTS)
-python3 slayer_apis_scanner_v3.1.py -a KEY --no-ai
-
-Skip Firebase Cloud Messaging checks
-python3 slayer_apis_scanner_v3.1.py -a KEY --no-fcm
-
-Include Cloud Storage checks (requires project ID)
-python3 slayer_apis_scanner_v3.1.py -a KEY --project-id my-gcp-project
-
-Control concurrency
-python3 slayer_apis_scanner_v3.1.py -a KEY -t 4
 
 
 ## In Action
