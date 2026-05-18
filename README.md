@@ -1,12 +1,13 @@
 # Slayer APIs Scanner 
-Slayer APIs Scanner is a focused security assessment tool designed to detect misconfigured, overly permissive, or abusable Google API keys by validating real-world access across multiple Google services.
+Slayer APIs Scanner is a focused security assessment tool designed to assess exposure and effective access scope of Google API keys by validating real-world access across multiple Google services.
 
-Unlike simple key validators, this tool classifies API key behavior to distinguish between:
-invalid or revoked keys
-valid keys with disabled APIs
-quota-exhausted keys
-restricted keys (IP / referer limited)
-keys that allow successful, billable API access
+The scanner distinguishes between:
+
+- Invalid or revoked keys
+- Valid keys with disabled APIs
+- Quota-exhausted keys
+- Restricted keys (IP / referer limited)
+- Keys that allow successful billable API access
 
 The scanner interacts with actual Google API endpoints and evaluates responses semantically rather than relying solely on HTTP status codes, reducing false positives and false negatives commonly seen in automated checks.
 
@@ -28,7 +29,7 @@ API key leakage validation
 Defensive testing of API key restrictions
 Internal security tooling & automation
 
-## Features
+## Detection Coverage
 - Firebase API testing
 - Google Maps API checks
 - Generative AI endpoint checks
@@ -68,6 +69,10 @@ optional arguments:
   -t THREADS, --threads THREADS
                         Number of concurrent threads (default: 8)
 
+
+<img width="1555" height="376" alt="2026-01-13 21_28_37-Scripts - File Explorer" src="https://github.com/user-attachments/assets/afddd985-f313-44de-8448-6da323b87674" />
+
+
   **Common Options**
 
 Verbose mode (print requests & responses)
@@ -79,12 +84,6 @@ Skip Firebase Cloud Messaging checks
 Include Cloud Storage checks (requires project ID)
 
 Control concurrency
-
-<img width="1555" height="376" alt="2026-01-13 21_28_37-Scripts - File Explorer" src="https://github.com/user-attachments/assets/afddd985-f313-44de-8448-6da323b87674" />
-
-
-
-
 
 
 ## In Action
