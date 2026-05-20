@@ -7,7 +7,6 @@
   Author  : Slayer
   Role    : Security Research / Offensive Testing
   Scope   : Google API key exposure & misconfiguration detection
-
 ═══════════════════════════════════════════════════════════════
 
 Changelog v4.0 (Major Update):
