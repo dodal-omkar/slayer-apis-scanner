@@ -1,4 +1,5 @@
 # Slayer APIs Scanner 
+
 Slayer APIs Scanner is a focused security assessment tool designed to assess exposure and effective access scope of Google API keys by validating real-world access across multiple Google services.
 
 The scanner distinguishes between:
