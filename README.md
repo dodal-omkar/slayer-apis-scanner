@@ -1,6 +1,6 @@
 # slayer_apis_scanner v4.2
 
-Google API Key Misconfiguration Scanner — A comprehensive security tool for detecting exposed and misconfigured Google API keys.
+Google API Key Misconfiguration Scanner - A comprehensive security tool for detecting exposed and misconfigured Google API keys.
 
 [![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
