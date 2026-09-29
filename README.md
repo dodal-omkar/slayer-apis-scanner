@@ -7,7 +7,7 @@ Google API Key Misconfiguration Scanner — a security assessment tool for detec
 [![Security](https://img.shields.io/badge/security-research-red.svg)](https://github.com/dodal-omkar/slayer-apis-scanner)
 [![Version](https://img.shields.io/badge/version-v5.1-orange.svg)](https://github.com/dodal-omkar/slayer-apis-scanner)
 
-<img width="1359" height="685" alt="image" src="https://github.com/user-attachments/assets/67f96aad-7177-43ee-889a-a9cd45588dde" />
+<img width="1354" height="687" alt="image" src="https://github.com/user-attachments/assets/955e4f55-65b7-4190-9122-f584efed6129" />
 
 
 ## 🎯 Overview
