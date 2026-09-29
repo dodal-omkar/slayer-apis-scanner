@@ -1,152 +1,196 @@
-# slayer_apis_scanner v4.2
+# slayer_apis_scanner v5.1
 
-Google API Key Misconfiguration Scanner - A comprehensive security tool for detecting exposed and misconfigured Google API keys.
+Google API Key Misconfiguration Scanner — a security assessment tool for detecting exposed and misconfigured Google API keys.
 
 [![Python 3.x](https://img.shields.io/badge/python-3.x-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Security](https://img.shields.io/badge/security-research-red.svg)](https://github.com/dodal-omkar/slayer-apis-scanner)
+[![Version](https://img.shields.io/badge/version-v5.1-orange.svg)](https://github.com/dodal-omkar/slayer-apis-scanner)
+
+<img width="1359" height="685" alt="image" src="https://github.com/user-attachments/assets/67f96aad-7177-43ee-889a-a9cd45588dde" />
+
 
 ## 🎯 Overview
 
-**slayer_apis_scanner** is a specialized security tool designed for offensive security testing and API key exposure detection. It systematically probes Google API endpoints to identify misconfigurations, unrestricted access, and potential security vulnerabilities in API key implementations.
+**slayer_apis_scanner** is a specialized security tool for offensive security testing and API key exposure detection. It systematically probes Google API endpoints to identify misconfigurations, unrestricted access, and potential security vulnerabilities in API key implementations.
 
 ### Key Features
 
-- **35 Endpoint Coverage**: Tests critical Google services including Maps, YouTube, Firebase, Gemini AI, Vision, Translation, and more
-- **Multi-threaded Scanning**: Concurrent endpoint testing for faster results (configurable up to 16+ threads)
-- **Smart Detection**: Differentiates between invalid keys, valid-but-restricted keys, and exploitable access
-- **PoC Generation**: Automatic curl command generation with API key sanitization
-- **Zero False Positives**: Advanced error classification to eliminate misleading results
-- **Security-First Design**: API keys are masked in all output to prevent accidental leakage
+- **20–33 Endpoint Coverage** — Tests Google Maps, YouTube, Gemini AI, Vision, Speech, Natural Language, Drive, Translate, and Firebase-related checks across four scan profiles
+- **Batch Scanning** — Supply a file of keys with `-K`; each key gets a full independent scan with a timestamped separator
+- **Multi-threaded** — Concurrent endpoint testing with configurable thread count (default: 8)
+- **Smart Detection** — Structured status taxonomy that differentiates INVALID_KEY, RESTRICTED, API_NOT_ENABLED, QUOTA_EXCEEDED, and ACCESSIBLE
+- **PoC Generation** — Auto-generates sanitized curl commands for every accessible endpoint with `--poc`
+- **Output Capture** — Save a clean ANSI-stripped copy of all terminal output with `-o` (like nmap `-oN`)
+- **GCP Project Attribution** — Extracts and surfaces the GCP project ID from Google error responses automatically
+- **Security-First** — API keys are masked in terminal output, verbose output, and generated PoC commands
 
 ## 🚀 Quick Start
 
 ### Installation
 
 ```bash
-# Clone the repository
 git clone https://github.com/dodal-omkar/slayer-apis-scanner.git
 cd slayer-apis-scanner
-
-# Make executable
-chmod +x slayer_apis_scanner_v4_1.py
+pip install -r requirements.txt
 ```
 
 ### Basic Usage
 
 ```bash
-# Interactive mode
-python3 slayer_apis_scanner_v4_1.py
+# Interactive mode (prompts for key)
+python slayer_apis_scanner_v5.1.py
 
 # Direct scan
-python3 slayer_apis_scanner_v4_1.py -a AIzaSyABC123...
+python slayer_apis_scanner_v5.1.py -a AIzaSyABC123...
 
-# Full scan with PoC generation
-python3 slayer_apis_scanner_v4_1.py -a AIzaSyABC123... --poc
+# Quick profile — no AI/ML traffic
+python slayer_apis_scanner_v5.1.py -a AIzaSyABC123... --profile quick
 
-# Verbose mode with 16 threads
-python3 slayer_apis_scanner_v4_1.py -a AIzaSyABC123... -v -t 16
+# Full deep scan with PoC generation
+python slayer_apis_scanner_v5.1.py -a AIzaSyABC123... --profile deep --poc
 
-# With GCP/firebase project ID for storage checks
-python3 slayer_apis_scanner_v4_1.py -a AIzaSyABC123... --project-id my-project-12345
+# Batch scan from file, skip confirmation
+python slayer_apis_scanner_v5.1.py -K keys.txt --profile standard -y
+
+# Save output to file
+python slayer_apis_scanner_v5.1.py -a AIzaSyABC123... --profile standard -o results.txt
+
+# With Firebase RT DB + project-scoped checks
+python slayer_apis_scanner_v5.1.py -a AIzaSyABC123... --profile standard \
+  --firebase-url https://myapp-default-rtdb.firebaseio.com \
+  --project-id my-gcp-project-123
 ```
 
 ## 🔧 Command-Line Options
-usage: slayer_apis_scanner_v4_1.py [-h] [-a API_KEY] [-v] [--poc] [--no-ai]
-[--no-fcm] [--project-id PROJECT_ID]
-[-t THREADS]
-options:
--a, --api-key         Google API key to test
--v, --verbose         Print verbose HTTP requests/responses
---poc                 Generate curl PoC commands for vulnerabilities
---no-ai               Skip AI/ML checks (Gemini, TTS, Vision, etc.)
---no-fcm              Skip FCM checks
---project-id          GCP Project ID for Cloud Storage checks
--t, --threads         Number of concurrent threads (default: 8)
--h, --help            Show this help message and exit
 
+| Option | Description |
+|---|---|
+| `-a`, `--api-key` | Google API key to test. |
+| `-K`, `--keys-file` | Batch mode — one key per line, `#` lines skipped. |
+| `-o`, `--output` | Save ANSI-stripped output to file (overwrites with warning). |
+| `--profile` | `quick` / `standard` / `deep` / `custom`. Default: `custom`. |
+| `-y`, `--yes` | Skip confirmation prompt (useful for CI/automation). |
+| `-v`, `--verbose` | Show sanitized HTTP request/response details. |
+| `--debug` | Print a status line for every endpoint. |
+| `--poc` | Generate curl PoCs for accessible endpoints. |
+| `--no-ai` | Skip Gemini, TTS, STT, and Natural Language checks. |
+| `--no-maps` | Skip all 14 Maps Platform endpoints. |
+| `--no-state-change` | Skip Firebase signUp (creates a real account if open). |
+| `--no-experimental` | Skip the undocumented translate-pa probe. |
+| `--firebase-url` | Add Firebase RT DB world-read probes (no API key used). |
+| `--project-id` | Add Cloud Storage List + Firebase Remote Config checks. |
+| `-t`, `--threads` | Concurrent threads. Default: `8`. |
+| `--retries` | Extra retries on timeout/connection failures. Default: `0`. |
+| `--delay-ms` | Delay in ms before each request. Default: `0`. |
+
+## 📊 Scan Profiles
+
+| Profile | AI/ML | State change | Experimental | Maps | Endpoints |
+|---|---|---|---|---|---:|
+| `quick` | ❌ | ❌ | ❌ | ✅ | 20 |
+| `standard` | ✅ | ❌ | ❌ | ✅ | 31 |
+| `deep` | ✅ | ✅ | ✅ | ✅ | 33 |
+| `custom` | ✅ | ✅ | ✅ | ✅ | 33 |
+
+`--project-id` adds 2 endpoints. `--firebase-url` adds 2 endpoints.
+
+### Endpoint Inventory
+
+**`quick` (20):** Custom Search, Translate v2, YouTube ×2, Maps ×14 (Static Maps, Streetview, Directions, Geocode, Distance Matrix, Find Place, Autocomplete, Elevation, Timezone, Roads nearestRoads, Roads snapToRoads, Geolocate, Routes v2, Address Validation), Vision, Drive.
+
+**`standard` adds 11:** Text-to-Speech, Gemini List Files, Gemini List Models, Gemini generateContent, Gemini generateContent (vision), Gemini embedContent, Gemini countTokens, Speech-to-Text, NL Sentiment, NL Entities, NL Syntax.
+
+**`deep` adds 2:** Firebase signUp, Translate-PA (undocumented internal endpoint).
+
+**`custom`** — Same baseline as `deep`; use `--no-*` flags to disable selected modules.
 
 ## 📈 Output Interpretation
 
-### Finding Categories
+The scanner classifies every endpoint into a structured status — it does not treat every non-200 as a vulnerability.
 
-The scanner classifies API responses into several categories:
-
-✅ **[VULN]** - Endpoint is accessible and returned valid data  
-⚠️ **Valid Key but API not enabled** - Key is valid but API needs to be enabled in GCP console  
-⚠️ **Valid Key but Quota Exceeded** - Key is valid but has hit rate limits  
-⚠️ **Valid Key but IP/Referer Restricted** - Key exists but is properly restricted  
-❌ **Invalid Key** - Key is not recognized by Google's API infrastructure  
-
-
-
-## 📝 Changelog
-
-### v4.1 (Current)
-- [CRITICAL SECURITY] API key sanitization in PoC output
-- [CRITICAL FIX] Removed permission_denied from API-not-enabled classification
-- [CRITICAL FIX] Removed misleading endpoints (Calendar /users/me, Sheets, Compute Engine, Cloud Tasks)
-- [Feature] Comprehensive Gemini AI testing (generateContent, embedContent, countTokens)
-- [Feature] Gemini model listing and file operations
-- [Feature] PaLM 2 text generation endpoint
-- [Feature] Speech-to-Text API
-- [Feature] Natural Language API (sentiment, entities, syntax)
-- [Improvement] 35 reliable endpoints (removed 4 weak probes)
-- [Security] All curl commands now mask API keys
-- [Security] All responses mask API keys
-- [Accuracy] permission_denied correctly classified as restricted_key
-
-### v4.0
-- [CRITICAL FIX] Removed createAuthUri false positive
-- [CRITICAL FIX] EMAIL_EXISTS detection for Firebase signUp
-- [Feature] --poc flag for curl command generation
-- [Feature] Generative Language API endpoint
-- [Feature] 8 new Maps API endpoints (Distance Matrix, Geolocate, Find Place, etc.)
-- [Improvement] Better output formatting with color codes
-- [Fix] Improved error detection for API responses
-- [Fix] Proper JSON error field checking
-
-### v3.1
-- Show PoC URL in vulnerability output
-- Restore detailed error-token parsing
-- Use print_info() for thread-safe output
-- Masked API key in banner
-- Minor cleanups and comments
-
-### v3.0
-- Multi-threaded scanning with --threads flag
-- Safer URL parameter handling with urllib.parse
-- Improved error visibility for non-200 responses
-- Better image response detection
-
+✅ **ACCESSIBLE** — Request succeeded; endpoint is usable with this key. Confirm impact manually.  
+⚠️ **API_NOT_ENABLED** — Key is valid but the API is not enabled for this project.  
+⚠️ **RESTRICTED** — Key is restricted by IP, Referer, or permission policy.  
+⚠️ **QUOTA_EXCEEDED** — Key valid but quota exhausted (after one adaptive retry).  
+⚠️ **KEY_VALID_NO_FINDING** — Key reached the service but the probe didn't establish accessible access.  
+⚠️ **BAD_TEST_DATA** — Service usable but test payload rejected as invalid input.  
+❌ **INVALID_KEY** — Key rejected as invalid by Google.  
+❌ **ENDPOINT_NOT_FOUND** — Endpoint or model not available — not a key finding.  
+❌ **REQUEST_FAILED / TIMEOUT / HTTP_ERROR / UNKNOWN** — Infrastructure or classification failure.
 
 ## ⚡ Performance Tips
 
-1. **Increase threads** for faster scanning: `-t 16`
-2. **Skip AI checks** if not needed: `--no-ai` (saves ~13 API calls)
-3. **Skip FCM** if not testing server keys: `--no-fcm`
-4. **Use verbose mode** only for debugging: `-v` (slower due to output)
+1. **Skip Maps** if not in scope — saves 14 requests: `--no-maps`
+2. **Skip AI/ML** if not needed — saves 11 requests: `--no-ai`
+3. **Increase threads** for faster scanning: `-t 16`
+4. **Throttle for rate-sensitive targets**: `-t 4 --retries 2 --delay-ms 250`
+5. **Batch + auto-confirm** for multi-key automation: `-K keys.txt -y`
 
 ## 🔍 Detection Logic
 
-The scanner uses intelligent classification:
-- **200/201 with valid JSON** (no error field) → Vulnerable
-- **200/201 with error field** → Not vulnerable (API limitation)
-- **403 with accessNotConfigured** → Valid key, API not enabled
-- **403 with quotaExceeded** → Valid key, quota limit hit
-- **403 with refererNotAllowed/ipRefererBlocked** → Valid key, properly restricted
-- **400/403 with invalidApiKey** → Invalid key
-- **Other errors** → Logged for manual review
+- **200/201 with valid JSON** (no error field) → `ACCESSIBLE`
+- **200 with JSON null** (empty but accessible Firebase DB) → `ACCESSIBLE`
+- **403 `accessNotConfigured`** → `API_NOT_ENABLED`
+- **403 `quotaExceeded`** → `QUOTA_EXCEEDED` (retried once after 3 s)
+- **403 `refererNotAllowed` / `ipRefererBlocked`** → `RESTRICTED`
+- **400/403 `invalidApiKey`** → `INVALID_KEY`
+- **Key auth fallback** — if query-param returns `INVALID_KEY` or `API_NOT_ENABLED`, retries with `X-Goog-Api-Key` header automatically
+- **GCP project attribution** — project ID/name extracted from Google error prose and surfaced in the summary
 
+## ⚠️ Notes
 
-**Disclaimer**: This tool is for authorized security testing only. Unauthorized access to computer systems is illegal. The authors assume no liability for misuse of this tool.
+- **Firebase signUp** (`deep`/`custom`) can create a real Firebase auth account. Use `--no-state-change` if account creation isn't authorized.
+- **Firebase RT DB probes** don't use the API key — they test unauthenticated reads controlled by Firebase Rules.
+- **Maps and AI/ML endpoints** may consume quota and incur billing. Review the target project's billing setup before testing.
+- **Custom Search** uses a fixed example `cx` engine ID — tests key access to that engine only.
+- **`--project-id`** enables project-scoped probes for Cloud Storage and Firebase Remote Config. These results should be interpreted separately from API-key exposure because authorization may also depend on project/IAM configuration.
 
+## 📝 Changelog
 
-<img width="1781" height="455" alt="image" src="https://github.com/user-attachments/assets/2919a658-fa56-4512-b272-727003f25d61" />
+### v5.1 — Correctness & Hardening
 
+- Removed FCM Legacy HTTP API probe (`fcm.googleapis.com/fcm/send`) — shut down by Google on July 22, 2024. The replacement FCM v1 API requires OAuth2, out of scope for an API key scanner. `--no-legacy-fcm` and all related wiring removed.
+- Removed PaLM 2 `text-bison-001:generateText` probe — PaLM API fully decommissioned by Google.
+- Updated Gemini models: `gemini-1.5-flash` → `gemini-2.5-flash`, `text-embedding-004` (retired Jan 14, 2026) → `gemini-embedding-2`.
+- Corrected Translate v2 from GET to POST with JSON request body.
+- Moved Gemini List Files / List Models inside the `--no-ai` gate.
+- Fixed API-key masking for short keys (≤4 chars previously exposed full key).
+- Fixed Routes v2 PoC to sanitize key in curl output.
+- Fixed Firebase RT DB false negative — empty but accessible databases (JSON null) now correctly score `ACCESSIBLE`.
+- Fixed Vision batch-response handling — partial success no longer discarded.
+- Protected accessible-endpoint list with output lock (thread safety).
+- Hardened curl PoC shell escaping for single quotes and header values.
+- Output file now uses overwrite mode with a warning instead of silently appending.
+- Hardened GCP project attribution locking.
+- Removed dead warning filter; simplified `_TeeWriter.fileno()`.
+
+### v5.0 — Expansion & Automation
+
+- Batch scanning with `-K / --keys-file`.
+- Output capture with `-o / --output`.
+- GCP project attribution from Google error messages.
+- Firebase Realtime Database world-read probes (`--firebase-url`).
+- Firebase Remote Config read (`--project-id`).
+- `--no-maps` flag.
+- Maps Routes API v2 (`routes.googleapis.com`).
+- Maps Address Validation.
+- Maps Roads snapToRoads.
+- Adaptive `QUOTA_EXCEEDED` retry.
+- Improved banner and summary output.
+
+### v4.2 — Reliability & Accuracy
+
+- Every endpoint produces a persistent result record.
+- Structured JSON error as primary classification path.
+- Firebase signUp email derived from SHA-256 of the API key (deterministic).
+- Header fallback auth (`X-Goog-Api-Key`) when query-param fails.
+- Thread-local `requests.Session` per worker.
 
 ## In Action
 
-<img width="1904" height="913" alt="image" src="https://github.com/user-attachments/assets/730571b8-4108-4bb4-aa73-3239938cf0e2" />
+<img width="1904" alt="slayer_apis_scanner in action" src="https://github.com/user-attachments/assets/730571b8-4108-4bb4-aa73-3239938cf0e2" />
 
+---
 
+**Disclaimer**: This tool is for authorized security testing only. Unauthorized access to computer systems is illegal. The authors assume no liability for misuse of this tool.
